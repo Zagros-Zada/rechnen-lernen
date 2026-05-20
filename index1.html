@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kinder Rechnen Lernen</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #dff3ff, #fff1c7);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .app {
+      max-width: 560px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 24px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .menu-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 20px 0 10px;
+    }
+
+    .checkboxes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    label {
+      background: #f3f4f6;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 20px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    label:hover {
+      border-color: #3b82f6;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.3);
+      margin-right: 8px;
+    }
+
+    select {
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: 2px solid #d1d5db;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 15px 0;
+      font-weight: bold;
+      flex-wrap: wrap;
+    }
+
+    .task-box {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 25px;
+      margin: 20px 0;
+      border: 2px solid #e5e7eb;
+    }
+
+    .task {
+      font-size: 42px;
+      font-weight: bold;
+      color: #111827;
+      margin-bottom: 20px;
+    }
+
+    .answer-input {
+      width: 80%;
+      max-width: 260px;
+      padding: 14px;
+      font-size: 24px;
+      text-align: center;
+      border-radius: 14px;
+      border: 2px solid #d1d5db;
+      outline: none;
+    }
+
+    .answer-input:focus {
+      border-color: #3b82f6;
+    }
+
+    button {
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
+      background: #3b82f6;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 8px;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .green {
+      background: #22c55e;
+    }
+
+    .green:hover {
+      background: #15803d;
+    }
+
+    .red {
+      background: #ef4444;
+    }
+
+    .red:hover {
+      background: #b91c1c;
+    }
+
+    .orange {
+      background: #f59e0b;
+    }
+
+    .orange:hover {
+      background: #d97706;
+    }
+
+    .message {
+      min-height: 40px;
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 15px;
+      line-height: 1.5;
+    }
+
+    .small-text {
+      font-size: 15px;
+      color: #666;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <h1>🧮 Kinder Rechnen Lernen</h1>
+    <p class="subtitle">Wähle Übung und Schwierigkeit</p>
+
+    <div id="menu">
+      <div class="menu-title">Was möchtest du üben?</div>
+
+      <div class="checkboxes">
+        <label><input type="checkbox" value="+" /> Plus +</label>
+        <label><input type="checkbox" value="-" /> Minus -</label>
+        <label><input type="checkbox" value="*" /> Mal ×</label>
+        <label><input type="checkbox" value="/" /> Geteilt ÷</label>
+      </div>
+
+      <div class="menu-title">Schwierigkeit wählen</div>
+      <select id="levelSelect">
+        <option value="1">Level 1: sehr leicht bis 10</option>
+        <option value="2">Level 2: leicht bis 20</option>
+        <option value="3">Level 3: bis 50</option>
+        <option value="4">Level 4: bis 100</option>
+        <option value="5">Level 5: etwas schwerer bis 150</option>
+        <option value="6">Level 6: bis 200</option>
+        <option value="7">Level 7: Mal/Geteilt größer</option>
+        <option value="8">Level 8: bis 300</option>
+        <option value="9">Level 9: bis 500</option>
+        <option value="10">Level 10: Profi bis 1000</option>
+      </select>
+
+      <p class="small-text">Jede Runde hat 30 neue zufällige Aufgaben.</p>
+      <button class="green" onclick="startGame()">Übung starten</button>
+      <div class="message" id="menuMessage"></div>
+    </div>
+
+    <div id="game" class="hidden">
+      <div class="info">
+        <span id="questionNumber">Aufgabe 1 / 30</span>
+        <span id="score">Punkte: 0</span>
+        <span id="selectedTypes">Übung: +</span>
+      </div>
+
+      <div class="task-box">
+        <div class="task" id="task">5 + 3 = ?</div>
+        <input class="answer-input" id="answerInput" type="number" placeholder="Antwort" />
+        <br />
+        <button id="checkButton" onclick="checkAnswer()">Prüfen</button>
+        <button id="nextButton" class="green hidden" onclick="nextQuestion()">Weiter</button>
+      </div>
+
+      <div class="message" id="message"></div>
+      <button class="red" onclick="backToMenu()">Zurück zur Auswahl</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedOperations = [];
+    let level = 1;
+    let currentQuestion = 1;
+    let score = 0;
+    let correctAnswer = 0;
+    let currentText = "";
+    let answered = false;
+    const maxQuestions = 30;
+
+    function startGame() {
+      const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+      selectedOperations = Array.from(checked).map(item => item.value);
+      level = Number(document.getElementById("levelSelect").value);
+
+      if (selectedOperations.length === 0) {
+        document.getElementById("menuMessage").textContent = "Bitte mindestens eine Übung auswählen.";
+        document.getElementById("menuMessage").style.color = "red";
+        return;
+      }
+
+      currentQuestion = 1;
+      score = 0;
+      answered = false;
+
+      document.getElementById("menu").classList.add("hidden");
+      document.getElementById("game").classList.remove("hidden");
+      document.getElementById("selectedTypes").textContent = "Übung: " + selectedOperations.join("  ") + " | Level " + level;
+
+      generateQuestion();
+    }
+
+    function randomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function randomOperation() {
+      return selectedOperations[Math.floor(Math.random() * selectedOperations.length)];
+    }
+
+    function getMaxNumber() {
+      const maxByLevel = [10, 20, 50, 100, 150, 200, 250, 300, 500, 1000];
+      return maxByLevel[level - 1];
+    }
+
+    function generateQuestion() {
+      answered = false;
+
+      document.getElementById("message").textContent = "";
+      document.getElementById("answerInput").value = "";
+      document.getElementById("answerInput").disabled = false;
+      document.getElementById("checkButton").classList.remove("hidden");
+      document.getElementById("nextButton").classList.add("hidden");
+      document.getElementById("answerInput").focus();
+
+      const operation = randomOperation();
+      const max = getMaxNumber();
+      let a, b;
+
+      if (operation === "+") {
+        a = randomNumber(1, max);
+        b = randomNumber(1, max);
+        correctAnswer = a + b;
+        currentText = a + " + " + b + " = ?";
+      }
+
+      if (operation === "-") {
+        a = randomNumber(1, max);
+        b = randomNumber(1, a);
+        correctAnswer = a - b;
+        currentText = a + " - " + b + " = ?";
+      }
+
+      if (operation === "*") {
+        const malMaxA = Math.min(12 + level * 2, 30);
+        const malMaxB = Math.min(10 + level, 20);
+        a = randomNumber(1, malMaxA);
+        b = randomNumber(1, malMaxB);
+        correctAnswer = a * b;
+        currentText = a + " × " + b + " = ?";
+      }
+
+      if (operation === "/") {
+        const divMaxB = Math.min(10 + level, 20);
+        const divMaxResult = Math.min(10 + level * 3, 50);
+        b = randomNumber(1, divMaxB);
+        correctAnswer = randomNumber(1, divMaxResult);
+        a = b * correctAnswer;
+        currentText = a + " ÷ " + b + " = ?";
+      }
+
+      document.getElementById("task").textContent = currentText;
+      document.getElementById("questionNumber").textContent = "Aufgabe " + currentQuestion + " / " + maxQuestions;
+      document.getElementById("score").textContent = "Punkte: " + score;
+    }
+
+    function checkAnswer() {
+      if (answered) return;
+
+      const input = document.getElementById("answerInput");
+      const userAnswer = Number(input.value);
+      const message = document.getElementById("message");
+
+      if (input.value === "") {
+        message.textContent = "Bitte eine Antwort eingeben.";
+        message.style.color = "red";
+        return;
+      }
+
+      answered = true;
+      input.disabled = true;
+      document.getElementById("checkButton").classList.add("hidden");
+      document.getElementById("nextButton").classList.remove("hidden");
+
+      const solutionText = currentText.replace("?", correctAnswer);
+
+      if (userAnswer === correctAnswer) {
+        score++;
+        message.innerHTML = "✅ Richtig! Sehr gut!<br>" + solutionText;
+        message.style.color = "green";
+      } else {
+        message.innerHTML = "❌ Falsch.<br>Richtig ist: " + solutionText;
+        message.style.color = "red";
+      }
+
+      document.getElementById("score").textContent = "Punkte: " + score;
+    }
+
+    function nextQuestion() {
+      if (currentQuestion >= maxQuestions) {
+        endGame();
+        return;
+      }
+
+      currentQuestion++;
+      generateQuestion();
+    }
+
+    function endGame() {
+      document.getElementById("task").textContent = "🏆 Fertig!";
+      document.getElementById("answerInput").classList.add("hidden");
+      document.getElementById("checkButton").classList.add("hidden");
+      document.getElementById("nextButton").classList.add("hidden");
+      document.getElementById("questionNumber").textContent = "Fertig";
+      document.getElementById("score").textContent = "Punkte: " + score + " / " + maxQuestions;
+
+      let text = "";
+      if (score >= 27) text = "Super gemacht! 🌟";
+      else if (score >= 20) text = "Gut gemacht! Weiter so 😊";
+      else if (score >= 10) text = "Schon gut! Noch etwas üben 💪";
+      else text = "Nicht aufgeben! Nochmal versuchen ❤️";
+
+      document.getElementById("message").innerHTML = text + "<br>Du hast " + score + " von " + maxQuestions + " Punkten geschafft.";
+      document.getElementById("message").style.color = "green";
+    }
+
+    function backToMenu() {
+      document.getElementById("game").classList.add("hidden");
+      document.getElementById("menu").classList.remove("hidden");
+      document.getElementById("menuMessage").textContent = "";
+      document.getElementById("answerInput").classList.remove("hidden");
+      document.getElementById("answerInput").disabled = false;
+    }
+
+    document.getElementById("answerInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        checkAnswer();
+      }
+    });
+  </script>
+</body>
+</html>
